@@ -2,7 +2,7 @@
 import sys
 import MySQLdb
 import datetime
-
+import pandas as pd
 from deal_with_day_data import *
 
 reload(sys)
@@ -19,7 +19,7 @@ def insert_data_into_table(table_name,insert_column,stock,date_list,data_list):
         if len(date_list)==len(data_list):
             for i in range(len(date_list)):
                 # print table_name,insert_column,data_list[i],date_list[i],stock
-                if data_list[i] != None or data_list[i] != '':
+                if data_list[i] != None and data_list[i] != '' and pd.isnull(data_list[i]) == False:
                     sql = "UPDATE "+table_name+" SET "+insert_column+"="+str(data_list[i])+" WHERE trade_date='"+date_list[i]+" 00:00:00'"+" AND stock_code='"+stock+"'"
                     print sql
                     cursor.execute(sql)
@@ -30,7 +30,6 @@ def insert_data_into_table(table_name,insert_column,stock,date_list,data_list):
         print "update data successfully"
     except MySQLdb.Error, e:
         print "Mysql Error %d: %s" % (e.args[0], e.args[1])
-        print "but this error will not cause wrong data, everything is ok"
 
     cursor.close()
     db.close()
@@ -53,7 +52,7 @@ def calculate_one_month_return(stock_code):
     for i in range(len(index_list)-1):
         # print i
         # print index_list[i]
-        if all_close_price_list[index_list[i]] != None or all_close_price_list[index_list[i+1]] != None:
+        if all_close_price_list[index_list[i]] != None and all_close_price_list[index_list[i+1]] != None:
             one_month_return = float((all_close_price_list[index_list[i+1]] - all_close_price_list[index_list[i]]))/all_close_price_list[index_list[i]]
         else:
             one_month_return = None

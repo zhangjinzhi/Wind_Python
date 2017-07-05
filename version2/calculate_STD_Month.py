@@ -50,7 +50,7 @@ def STD_function(input_list):
 
 
 def insert_data_into_table(table_name,insert_column,stock,date_list,data_list):
-    db = MySQLdb.connect(host='127.0.0.1', user='root', passwd='zjz4818774', db='investv2', port=3306,charset='utf8')
+    db = MySQLdb.connect(host='127.0.0.1', user='root', passwd='zjz4818774', db='invest_after_calculation', port=3306,charset='utf8')
 
     cursor = db.cursor()
     
@@ -58,7 +58,7 @@ def insert_data_into_table(table_name,insert_column,stock,date_list,data_list):
         if len(date_list)==len(data_list):
             for i in range(len(date_list)):
                 # print table_name,insert_column,data_list[i],date_list[i],stock
-                if data_list[i] != None:
+                if data_list[i] != None and pd.isnull(data_list[i]) == False:
                     sql = "UPDATE "+table_name+" SET "+insert_column+"="+str(data_list[i])+" WHERE trade_date='"+date_list[i]+" 00:00:00'"+" AND stock_code='"+stock+"'"
                     print sql
                     cursor.execute(sql)
@@ -118,7 +118,7 @@ def calculate_std_month(stock_code,time_length):
 ###############################################控制计算和存储#########################################################
 ##############################################统一封装好的函数########################################################
 def calculate_and_store_std_month(symbols,time_length): 
-    db = MySQLdb.connect(host='127.0.0.1', user='root', passwd='zjz4818774', db='investv2', port=3306,charset='utf8')
+    db = MySQLdb.connect(host='127.0.0.1', user='root', passwd='zjz4818774', db='invest_after_calculation', port=3306,charset='utf8')
 
     cursor = db.cursor()
 
