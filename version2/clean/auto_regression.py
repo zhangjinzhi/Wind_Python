@@ -8,7 +8,7 @@ import pandas as pd
 import copy
 import numpy as np
 import statsmodels.api as sm
-
+import csv
 
 def get_factor_MonthReturn_from_table(factor,MonthReturn,table_name,trade_date):
     db = MySQLdb.connect(host='127.0.0.1', user='root', passwd='zjz4818774', db='invest_after_calculation', port=3306,charset='utf8')
@@ -41,12 +41,38 @@ def output_tvalues(x_list,y_list):
     
     results = model.fit()
     
-    print results.params
+    # print results.params
 
-    print results.summary()
+    # print results.summary()
 
     # print 't: ', results.tvalues[1]
-    print 't: ', results.tvalues
+    return results.tvalues[0]
+
+def store_tvalues(outputFp,x_list,y_list,trade_date,factor):
+    
+    tvalues = output_tvalues(x_list,y_list)
+    # result_df['factor']     = factor
+    # result_df['trade_date'] = trade_date
+    # result_df['tvalues']    = tvalues
+    # print result_df['factor']
+    # print result_df['trade_date']
+    # print result_df['tvalues']
+    result_list = []
+    result_list.append(factor)
+    result_list.append(trade_date)
+    result_list.append(tvalues)
+    # columns_text = ['factor','trade_date','tvalues']   
+    # print result_list
+    # result_df = pd.DataFrame(result_list,columns=columns_text)
+    # print result_df
+    # result_df.to_csv('test.csv', mode='ab+',index=False,dtype={'factor':str,'trade_date':str})
+
+    # outputFp = open('test.csv', 'ab+')
+    csvWriter = csv.writer(outputFp, dialect='excel')
+    csvWriter.writerow(result_list)
+    # outputFp.close()
+
+
 
 def get_2010_to_2016_all_EOM():
     import sys
@@ -67,6 +93,12 @@ def get_2010_to_2016_all_EOM():
 
 def auto_regression_get_tvalues():
 
+    columns_text = ['factor','trade_date','tvalues']   
+    outputFp = open('test.csv', 'ab+')
+    csvWriter = csv.writer(outputFp, dialect='excel')
+    csvWriter.writerow(columns_text)
+    # outputFp.close()
+
     all_EOM_2010_to_2016 = get_2010_to_2016_all_EOM()
 
     for EOM in all_EOM_2010_to_2016:
@@ -77,8 +109,10 @@ def auto_regression_get_tvalues():
 
         x_list,y_list = get_factor_MonthReturn_from_table(factor,MonthReturn,table_name,trade_date)
 
-        output_tvalues(x_list,y_list)
+        store_tvalues(outputFp,x_list,y_list,trade_date,factor)
 
+
+    outputFp.close()
 
 if __name__ == "__main__":
     
