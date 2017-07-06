@@ -2,7 +2,7 @@
 import sys
 import MySQLdb
 import datetime
-
+import pandas as pd
 from deal_with_day_data import *
 
 reload(sys)
@@ -15,7 +15,7 @@ def insert_ratio_into_table(table_name,insert_column,stock,date,data):
     cursor = db.cursor()
     
     try:
-        if data != None:
+        if data != None and data != '' and pd.isnull(data) == False:
             sql = "UPDATE "+table_name+" SET "+insert_column+"="+str(data)+" WHERE trade_date='"+date+"' AND stock_code='"+stock+"'"
             print sql
             cursor.execute(sql)
