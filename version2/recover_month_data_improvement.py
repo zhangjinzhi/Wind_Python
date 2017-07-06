@@ -3,6 +3,7 @@ import pandas
 import sys
 import MySQLdb
 import datetime
+import pandas as pd
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -56,7 +57,7 @@ def get_recover_data_function(table_name,stock_code,date_has_data,date_no_data1,
 
     for data in data_list:
         try:
-            if data != None:
+            if data != None and pd.isnull(data) == False:
                 sql1 = "UPDATE "+table_name+" SET "+recover_column+"="+str(data)+" WHERE trade_date='"+date_no_data1+"' AND stock_code='"+stock_code+"'"
                 # print sql1
                 cursor.execute(sql1)
