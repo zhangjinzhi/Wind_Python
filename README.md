@@ -40,6 +40,6 @@ multifactorial_model文件夹中是目前最完整的。
 
 ### 2018-10-14 补充：
 #### 移动平均值等计算
-     可以采用: (1)pandas的rolling_max, rolling_min, rolling_corr, rolling_std函数
+   可以采用: (1)pandas的rolling_max, rolling_min, rolling_corr, rolling_std函数
 
 
