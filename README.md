@@ -42,10 +42,10 @@ multifactorial_model文件夹中是目前最完整的。
 #### 移动平均值等计算
    可以采用: (1)pandas的rolling_max, rolling_min, rolling_corr, rolling_std函数
 #### 考虑采用PyTables
-   PyTables是Python与HDF5数据库/文件标准的结合，专门为优化I/O操作的性能，最大限度地利用可用硬件而设计。该库的导入名称为tables。
-   PyTables数据库可以有许多表，且支持压缩和索引，以及表的重要查询。此外，还可以高效地存储NumPy数组，并且有自己独特的类数组数据结构。
-   PyTables和pandas都可以处理复杂的类SQL查询，且对操作速度进行了优化。
-   PyTables提供基于文件的数据库格式，‘一定要记住提交’，SQLite3中commit命令在PyTables中由flush方法实现。
-   ！！！PyTables支持内存外计算，所以可以实现不适合于内存的基于数组的计算。
+   - PyTables是Python与HDF5数据库/文件标准的结合，专门为优化I/O操作的性能，最大限度地利用可用硬件而设计。该库的导入名称为tables。
+   - PyTables数据库可以有许多表，且支持压缩和索引，以及表的重要查询。此外，还可以高效地存储NumPy数组，并且有自己独特的类数组数据结构。
+   - PyTables和pandas都可以处理复杂的类SQL查询，且对操作速度进行了优化。
+   - PyTables提供基于文件的数据库格式，‘一定要记住提交’，SQLite3中commit命令在PyTables中由flush方法实现。
+   - ！！！PyTables支持内存外计算，所以可以实现不适合于内存的基于数组的计算。
    （在之前的project中很多指标的计算是在内存中基于数组，速度很慢，且自己要处理复杂的滑动窗口等不必要的工作量。回头看去年的project，真是操之过急，没有设计好最佳实现）
 
